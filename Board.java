@@ -9,14 +9,20 @@ public class Board {
 			}
 		}
 	}
-	public Space spaceAt(int x, int y) {
+	/* Returns the space on the board at the x,y  location requested: where spaceAt(0, 0) returns the space
+	 * at the bottom left corner and spaceAt(7, 7) at the top-right
+	 * Precondition: 0 <= x <= 7, 0 <= y <= 7 on the board to return a space within the 8 x 8 board. If not,
+	 * IllegalArgumentException thrown
+	 */
+	public Space spaceAt(int x, int y){
 		if (x >= 0 && x < 8 && y >= 0 && y < 8) {
 			return board[y][x];
 		}
 		else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("That space is not on the board");
 		}
 	}
+	//Returns a visual representation of the board using the aesthetic of the Sjeng chess engine
 	public String toString() {
 		String border = "  +----+----+----+----+----+----+----+----+";
 		StringBuffer board = new StringBuffer();
@@ -50,6 +56,7 @@ public class Board {
 		board.append("     a    b    c    d    e    f    g    h");
 		return board.toString();
 	}
+	//Returns a one character representation of the ChessPiece for use by the toString method
 	private String pieceToStr(ChessPiece piece) {
 		switch (piece.getClass().getName()) {
 		case "Pawn":
@@ -65,6 +72,12 @@ public class Board {
 		}
 		return "K";
 	}
+	/**
+	 * Places a chess piece on the board
+	 * @param x x-coordinate of space on which the piece should be placed
+	 * @param y y-coordinate of the space on which the piece should be placed
+	 * @param piece piece to be placed on the board
+	 */
 	public void putPiece(int x, int y, ChessPiece piece) {
 		Space space = spaceAt(x, y);
 		space.pieceHere = piece;

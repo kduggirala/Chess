@@ -19,6 +19,7 @@ public class Play {
 			intro();
 			input = in.nextLine();
 		}
+		chessGame.setupDefaultGame();
 		while (!(chessGame.checkmated() || chessGame.stalemated())) {
 			System.out.println(chessGame.displayBoard());
 			boolean isWhiteTurn = chessGame.whoseTurn();

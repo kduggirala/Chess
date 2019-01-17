@@ -11,7 +11,7 @@ public class Game {
 		isWhiteTurn = true;
 		whitePieces = new ArrayList<ChessPiece>();
 		blackPieces = new ArrayList<ChessPiece>();
-		setupDefaultGame();
+		
 	}
 	public void move(String input) {
 		input = input.trim().toLowerCase();

@@ -15,6 +15,10 @@ public class Space {
 		}
 		return false;
 	}
+	/* returns the difference of the x coordinates and y coordinates of this space and the parameter
+	 * @param there space to which this space's x and y coordinates is being compared to
+	 * @return the difference of the x and y coordinates in an array
+	 */
 	public int[] relativeTo(Space there) {
 		int[] relative = {there.x - x, there.y - y};
 		return relative;

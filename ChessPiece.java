@@ -4,11 +4,11 @@ public abstract class ChessPiece {
 	boolean isWhite;
 	abstract boolean canMove(Space there, Board b);
 	/**
-	 * 
+	 * Moves the piece on the board to the given space
+	 * Precondition: the move is a legal move for this piece, if not IllegalArgumentException thrown
 	 * @param there space the piece wishes to move to
 	 * @param b the board one which it moves, important for determining whether it can move at all
-	 * @return the captured piece if the move was successful and a piece captured. If move is illegal,
-	 * IllegalArgumentException is thrown.
+	 * @return the captured piece if a piece captured, otherwise null
 	 */
 	public ChessPiece move(Space there, Board b) {
 		if (canMove(there, b)) {
@@ -22,7 +22,7 @@ public abstract class ChessPiece {
 			return pieceThere; //return captured piece if one was captured
 		}
 		else {
-			throw new IllegalArgumentException("This piece cannot move to the designated location.");
+			throw new IllegalArgumentException("This piece can't move there.");
 		}
 	}
 	/*
@@ -31,11 +31,11 @@ public abstract class ChessPiece {
 	 */
 	protected boolean isHorizontalMove(Space there, Board b) {
 		int[] relative = here.relativeTo(there);
-		if (relative[1] == 0) { //Horizontal movement
+		if (relative[1] == 0) { //No vertical movement
 			Space cur;
 			for (int i = 1; i < Math.abs(relative[0]); i++) {
 				cur = relative[0] > 0 ? b.spaceAt(here.x + i, here.y) : b.spaceAt(here.x - i, here.y);
-				if (cur.pieceHere != null) {
+				if (cur.pieceHere != null) { //if there's a piece between the start and end location
 					return false;
 				}
 			}
@@ -46,11 +46,11 @@ public abstract class ChessPiece {
 	}
 	protected boolean isVerticalMove(Space there, Board b) {
 		int[] relative = here.relativeTo(there);
-		if (relative[0] == 0) { //vertical movement
+		if (relative[0] == 0) { //No horizontal movement
 			Space cur;
 			for (int i = 1; i < Math.abs(relative[1]); i++) {
 				cur = relative[1] > 0 ? b.spaceAt(here.x, here.y + i) : b.spaceAt(here.x, here.y - i);
-				if (cur.pieceHere != null) {
+				if (cur.pieceHere != null) { //if there's a piece between the start and end locations
 					return false;
 				}
 			}
@@ -67,7 +67,7 @@ public abstract class ChessPiece {
 			int dy = relative[1] > 0 ? 1 : -1; //Whether moving forward or backwards
 			for (int i = 1; i < Math.abs(relative[0]); i++) {
 				cur = b.spaceAt(here.x + (dx * i), here.y + (dy * i));
-				if (cur.pieceHere != null) {
+				if (cur.pieceHere != null) { //if there's a piece between starting and ending locations
 					return false;
 				}
 			}
