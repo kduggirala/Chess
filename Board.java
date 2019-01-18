@@ -76,10 +76,17 @@ public class Board {
 	 * Places a chess piece on the board
 	 * @param x x-coordinate of space on which the piece should be placed
 	 * @param y y-coordinate of the space on which the piece should be placed
+	 * Precondition: @see spaceAt
 	 * @param piece piece to be placed on the board
 	 */
 	public void putPiece(int x, int y, ChessPiece piece) {
-		Space space = spaceAt(x, y);
+		Space space = null;
+		try {	
+			space = spaceAt(x, y);
+		}
+		catch(IllegalArgumentException e) {
+			throw e;
+		}
 		space.pieceHere = piece;
 		piece.here = space;
 	}

@@ -50,9 +50,7 @@ public class Play {
 							}
 						}
 					}
-					
 					break;
-					
 				}
 				catch(IllegalArgumentException e) {
 					System.out.println(e.getMessage());
@@ -90,7 +88,7 @@ public class Play {
 		System.out.println("To see the rules, press \"r\".\nTo see the controls, press \"?\".\nTo play, press \"p\"");
 		System.out.println();
 	}
-	public static Board sampleBoards(int n) {
+	public static Board getSampleBoards(int n) {
 		switch(n) {
 		case 1:
 			return sampleBoard1();
@@ -100,7 +98,41 @@ public class Play {
 	}
 	private static Board sampleBoard1() {
 		Board sampleBoard = new Board();
-		sampleBoard.putPiece(, y, new Pawn(true));
+		sampleBoard.putPiece(0, 0, new Rook(true));
+		sampleBoard.putPiece(0, 7, new Rook(true));
+		sampleBoard.putPiece(0, 1, new Knight(true));
+		sampleBoard.putPiece(0, 6, new Knight(true));
+		sampleBoard.putPiece(0, 2, new Bishop(true));
+		sampleBoard.putPiece(0, 5, new Bishop(true));
+		sampleBoard.putPiece(0, 3, new Queen(true));
+		sampleBoard.putPiece(0, 4, new King(true));
+		sampleBoard.putPiece(1, 0, new Pawn(true));
+		sampleBoard.putPiece(1, 0, new Pawn(true));
+		sampleBoard.putPiece(1, 0, new Pawn(true));
+		sampleBoard.putPiece(1, 0, new Pawn(true));
+		sampleBoard.putPiece(1, 0, new Pawn(true));
+		sampleBoard.putPiece(1, 0, new Pawn(true));
+		sampleBoard.putPiece(1, 0, new Pawn(true));
+		sampleBoard.putPiece(1, 0, new Pawn(true));
+		sampleBoard.putPiece(7, 0, new Rook(true));
+		sampleBoard.putPiece(7, 7, new Rook(true));
+		sampleBoard.putPiece(7, 1, new Knight(true));
+		sampleBoard.putPiece(7, 6, new Knight(true));
+		sampleBoard.putPiece(7, 2, new Bishop(true));
+		sampleBoard.putPiece(7, 5, new Bishop(true));
+		sampleBoard.putPiece(7, 3, new Queen(true));
+		sampleBoard.putPiece(7, 4, new King(true));
+		sampleBoard.putPiece(6, 0, new Pawn(true));
+		sampleBoard.putPiece(6, 0, new Pawn(true));
+		sampleBoard.putPiece(6, 0, new Pawn(true));
+		sampleBoard.putPiece(6, 0, new Pawn(true));
+		sampleBoard.putPiece(6, 0, new Pawn(true));
+		sampleBoard.putPiece(6, 0, new Pawn(true));
+		sampleBoard.putPiece(6, 0, new Pawn(true));
+		sampleBoard.putPiece(6, 0, new Pawn(true));
 		return sampleBoard;
+	}
+	public static void playSampleBoards(Board sampleBoard) {
+		
 	}
 }
