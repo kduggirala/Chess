@@ -6,12 +6,36 @@ public class Game {
 	private ArrayList<ChessPiece> blackPieces;
 	private King whiteKing;
 	private King blackKing;
+	
 	public Game() {
 		board = new Board();
 		isWhiteTurn = true;
 		whitePieces = new ArrayList<ChessPiece>();
 		blackPieces = new ArrayList<ChessPiece>();
+	}
+	//starting a game from a 
+	public Game(Board b) {
+		board = b;
+		isWhiteTurn = true;
+		whitePieces = new ArrayList<ChessPiece>();
+		blackPieces = new ArrayList<ChessPiece>();
+		Space cur;
 		
+		//add peices
+		for (int i = 0; i < 8; i++) { 
+			for (int j = 0; j < 8; j++) {
+				cur = b.spaceAt(i, j);
+				if (cur.pieceHere != null) {
+					ChessPiece thisPiece = cur.pieceHere;
+					if (thisPiece.isWhite) {
+						whitePieces.add(thisPiece);
+					}
+					else {
+						blackPieces.add(thisPiece);
+					}
+				}
+			}
+		}
 	}
 	public void move(String input) {
 		input = input.trim().toLowerCase();

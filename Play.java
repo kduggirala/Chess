@@ -13,6 +13,29 @@ public class Play {
 			else if (input.equalsIgnoreCase("r")) {
 				displayRules();
 			}
+			else if (input.equalsIgnoreCase("s")) {
+				displaySampleOptions();
+				String boardChoice = in.nextLine();
+				while (true) {	
+					try {
+						try {
+							Board sampleBoard = getSampleBoards(Integer.parseInt(boardChoice));
+							playSampleBoard(sampleBoard);
+						}
+						catch(IllegalArgumentException e) {
+							System.out.println(e.getMessage());
+						}
+					}
+					catch (NumberFormatException e) { //if a number was not input
+						if (boardChoice.equalsIgnoreCase("q")) {
+							break;
+						}
+						else {
+							System.out.println("That is not an option. Try again.");
+						}
+					}
+				}
+			}
 			else {
 				System.out.println("That is not one of the options. Try again");
 			}
@@ -82,7 +105,7 @@ public class Play {
 	private static void displayControls() {
 		System.out.println("Use the chess coordinates along the side of the board to locate spaces: first the letter then number as one word.");
 		System.out.println("First enter the space of the piece you want to move, then the space to which you would like it to"); 
-		System.out.println("move with a space between the two. Black pieces are denoted with a star.\n\n");
+		System.out.println("move with a space between the two. You can test these controls on the sample boards.\n\n");
 	}
 	private static void intro() {
 		System.out.println("To see the rules, press \"r\".\nTo see the controls, press \"?\".\nTo play, press \"p\"");
@@ -107,32 +130,37 @@ public class Play {
 		sampleBoard.putPiece(0, 3, new Queen(true));
 		sampleBoard.putPiece(0, 4, new King(true));
 		sampleBoard.putPiece(1, 0, new Pawn(true));
-		sampleBoard.putPiece(1, 0, new Pawn(true));
-		sampleBoard.putPiece(1, 0, new Pawn(true));
-		sampleBoard.putPiece(1, 0, new Pawn(true));
-		sampleBoard.putPiece(1, 0, new Pawn(true));
-		sampleBoard.putPiece(1, 0, new Pawn(true));
-		sampleBoard.putPiece(1, 0, new Pawn(true));
-		sampleBoard.putPiece(1, 0, new Pawn(true));
-		sampleBoard.putPiece(7, 0, new Rook(true));
-		sampleBoard.putPiece(7, 7, new Rook(true));
-		sampleBoard.putPiece(7, 1, new Knight(true));
-		sampleBoard.putPiece(7, 6, new Knight(true));
-		sampleBoard.putPiece(7, 2, new Bishop(true));
-		sampleBoard.putPiece(7, 5, new Bishop(true));
-		sampleBoard.putPiece(7, 3, new Queen(true));
-		sampleBoard.putPiece(7, 4, new King(true));
-		sampleBoard.putPiece(6, 0, new Pawn(true));
-		sampleBoard.putPiece(6, 0, new Pawn(true));
-		sampleBoard.putPiece(6, 0, new Pawn(true));
-		sampleBoard.putPiece(6, 0, new Pawn(true));
-		sampleBoard.putPiece(6, 0, new Pawn(true));
-		sampleBoard.putPiece(6, 0, new Pawn(true));
-		sampleBoard.putPiece(6, 0, new Pawn(true));
-		sampleBoard.putPiece(6, 0, new Pawn(true));
+		sampleBoard.putPiece(1, 1, new Pawn(true));
+		sampleBoard.putPiece(1, 2, new Pawn(true));
+		sampleBoard.putPiece(1, 3, new Pawn(true));
+		sampleBoard.putPiece(1, 4, new Pawn(true));
+		sampleBoard.putPiece(1, 5, new Pawn(true));
+		sampleBoard.putPiece(1, 6, new Pawn(true));
+		sampleBoard.putPiece(1, 7, new Pawn(true));
+		sampleBoard.putPiece(7, 0, new Rook(false));
+		sampleBoard.putPiece(7, 7, new Rook(false));
+		sampleBoard.putPiece(7, 1, new Knight(false));
+		sampleBoard.putPiece(7, 6, new Knight(false));
+		sampleBoard.putPiece(7, 2, new Bishop(false));
+		sampleBoard.putPiece(7, 5, new Bishop(false));
+		sampleBoard.putPiece(7, 3, new Queen(false));
+		sampleBoard.putPiece(7, 4, new King(false));
+		sampleBoard.putPiece(6, 0, new Pawn(false));
+		sampleBoard.putPiece(6, 1, new Pawn(false));
+		sampleBoard.putPiece(6, 2, new Pawn(false));
+		sampleBoard.putPiece(6, 3, new Pawn(false));
+		sampleBoard.putPiece(6, 4, new Pawn(false));
+		sampleBoard.putPiece(6, 5, new Pawn(false));
+		sampleBoard.putPiece(6, 6, new Pawn(false));
+		sampleBoard.putPiece(6, 7, new Pawn(false));
 		return sampleBoard;
 	}
-	public static void playSampleBoards(Board sampleBoard) {
+	public static void displaySampleOptions() {
+		System.out.println("Welcome to the sample boards. Type in the number of the sample board you would like to play with:");
+		System.out.println("Board 1: Castling Demonstration");
+	}
+	public static void playSampleBoard(Board sampleBoard) {
+		Game playSampleBoard = new Game();
 		
 	}
 }
