@@ -4,52 +4,53 @@ public class Play {
 		Scanner in = new Scanner(System.in);
 		Game chessGame = new Game();
 		System.out.println("Welcome to Two-Player Terminal Chess!\n");
-		intro();
-		String input = in.nextLine();
-		boolean isQuitting = false;
-		while (!input.equalsIgnoreCase("p")) {
-			if (input.equals("?")) {
-				displayControls();
-			}
-			else if (input.equalsIgnoreCase("r")) {
-				displayRules();
-			}
-			else if (input.equalsIgnoreCase("s")) {
-				displaySampleOptions();
-				String boardChoice = in.nextLine();
-				while (true) {	
-					try {
+		boolean isQuitting = false; // programs runs while this is true.
+		while (!isQuitting) {
+			intro();
+			String input = in.nextLine();
+			while (!input.equalsIgnoreCase("p")) {
+				if (input.equals("?")) {
+					displayControls();
+				}
+				else if (input.equalsIgnoreCase("r")) {
+					displayRules();
+				}
+				else if (input.equalsIgnoreCase("s")) {
+					displaySampleOptions();
+					String boardChoice = in.nextLine();
+					while (true) {	
 						try {
-							Board sampleBoard = getSampleBoards(Integer.parseInt(boardChoice));
-							Game playSampleBoard = new Game(sampleBoard);
-							playChess(playSampleBoard);
+							try {
+								Board sampleBoard = getSampleBoards(Integer.parseInt(boardChoice));
+								Game playSampleBoard = new Game(sampleBoard);
+								playChess(playSampleBoard);
+							}
+							catch(IllegalArgumentException e) {
+								System.out.println(e.getMessage());
+							}
 						}
-						catch(IllegalArgumentException e) {
-							System.out.println(e.getMessage());
-						}
-					}
-					catch (NumberFormatException e) { //if a number was not input
-						if (boardChoice.equalsIgnoreCase("q")) { //if user wanted to quit 
-							break;
-						}
-						else {
-							System.out.println("That is not an option. Try again.");
+						catch (NumberFormatException e) { //if a number was not input
+							if (boardChoice.equalsIgnoreCase("q")) { //if user wanted to quit 
+								break;
+							}
+							else {
+								System.out.println("That is not an option. Try again.");
+							}
 						}
 					}
 				}
+				else if (input.equalsIgnoreCase("q")) { //if the user wants to quit the program
+					isQuitting = true;
+					break;
+				}
+				else {
+					System.out.println("That is not one of the options. Try again");
+				}
+				System.out.println();
+				intro();
+				input = in.nextLine();
 			}
-			else if (input.equalsIgnoreCase("q")) { //if the user wants to quit the program
-				isQuitting = true;
-				break;
-			}
-			else {
-				System.out.println("That is not one of the options. Try again");
-			}
-			intro();
-			input = in.nextLine();
-		}
-		if (!isQuitting) {		
-			boolean playingChess = true;	
+			boolean playingChess = !isQuitting;	
 			while(playingChess) {
 				playChess(chessGame);	
 				System.out.println("\nWould you like to play again? If yes, type \"y\". Otherwise enter anything else.");
@@ -154,7 +155,7 @@ public class Play {
 		System.out.println("       piece; it cannot capture pieces directly in front of it.");
 		System.out.println("	3) Otherwise, it can only move one space in front of it.");
 		System.out.println("If a pawn reaches the other side of the board, it has the choice of turning into a queen, rook, knight");
-		System.out.println("or bishop. 8 on the board.");
+		System.out.println("or bishop. 8 on the board.\n");
 		System.out.println("Special moves:");
 		System.out.println("1. Castling: If neither the king nor one of the rooks have moved, and all spaces between them in the same");
 		System.out.println("   row are empty, they can perform a special move called a castle. This involves the king moving two spaces");
@@ -167,10 +168,10 @@ public class Play {
 	private static void displayControls() {
 		System.out.println("Use the chess coordinates along the side of the board to locate spaces: first the letter then number as one word.");
 		System.out.println("First enter the space at which the piece you want to move is located, then the space to which you would like it to"); 
-		System.out.println("move with a space between the two. Press \"q\" at any time to quit. You can test these controls on the sample boards.\n\n");
+		System.out.println("move with a space between the two. Press \"q\" at any time to quit. You can test these controls on the sample boards.\n");
 	}
 	private static void intro() {
-		System.out.println("To see the rules, press \"r\".\nTo see the controls, press \"?\".\nTo quit, press \"q\".\nTo play, press \"p\"");
+		System.out.println("To see the rules, press \"r\".\nTo see the controls, press \"?\".\nTo see the sample boards, press\"s\".\nTo quit and kill the program, press \"q\".\nTo play, press \"p\"");
 		System.out.println();
 	}
 	public static Board getSampleBoards(int n) {
