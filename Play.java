@@ -3,7 +3,7 @@ public class Play {
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
 		Game chessGame = new Game();
-		System.out.println("Welcome to Chess!\n");
+		System.out.println("Welcome to Two-Player Terminal Chess!\n");
 		intro();
 		String input = in.nextLine();
 		while (!input.equalsIgnoreCase("p")) {
@@ -42,7 +42,18 @@ public class Play {
 			intro();
 			input = in.nextLine();
 		}
-		chessGame.setupDefaultGame();
+		
+		boolean playingChess = true;	
+		while(playingChess) {
+			playChess(chessGame);	
+			System.out.println("\nWould you like to play again? If yes, type \"y\". Otherwise.");
+			playingChess = in.nextLine().equalsIgnoreCase("y");
+		}
+		
+		in.close();
+	}
+	private static void playChess(Game chessGame) {
+		Scanner in = new Scanner(System.in);
 		while (!(chessGame.checkmated() || chessGame.stalemated())) {
 			System.out.println(chessGame.displayBoard());
 			boolean isWhiteTurn = chessGame.whoseTurn();
@@ -81,8 +92,16 @@ public class Play {
 			}
 		}
 		System.out.println(chessGame.displayBoard());
-		System.out.println("Checkmate!" + (chessGame.whoseTurn() ? "Black" : "White") + " wins!");
-		in.close();
+		String winningTeam = chessGame.whoseTurn() ? "Black" : "White";
+		if (chessGame.checkmated()) {
+			System.out.println("Checkmate! " + winningTeam + " wins!");
+		}
+		else if (chessGame.stalemated()) {
+			System.out.println("Stalemate! It's a draw!");
+		}
+		else {
+			System.out.println(chessGame.whoseTurn() ? "White" : "Black" + " side forfeits. " + winningTeam + " side wins!");
+		}
 	}
 	private static ChessPiece getNewPiece(String choice, boolean isWhite) {
 		switch(choice) {
@@ -104,8 +123,8 @@ public class Play {
 	}
 	private static void displayControls() {
 		System.out.println("Use the chess coordinates along the side of the board to locate spaces: first the letter then number as one word.");
-		System.out.println("First enter the space of the piece you want to move, then the space to which you would like it to"); 
-		System.out.println("move with a space between the two. You can test these controls on the sample boards.\n\n");
+		System.out.println("First enter the space at which the piece you want to move is located, then the space to which you would like it to"); 
+		System.out.println("move with a space between the two. Press \"q\" at any time to quit. You can test these controls on the sample boards.\n\n");
 	}
 	private static void intro() {
 		System.out.println("To see the rules, press \"r\".\nTo see the controls, press \"?\".\nTo play, press \"p\"");
@@ -161,6 +180,7 @@ public class Play {
 	}
 	public static void playSampleBoard(Board sampleBoard) {
 		Game playSampleBoard = new Game();
+		playChess(playSampleBoard);
 		
 	}
 }

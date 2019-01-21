@@ -12,29 +12,44 @@ public class Game {
 		isWhiteTurn = true;
 		whitePieces = new ArrayList<ChessPiece>();
 		blackPieces = new ArrayList<ChessPiece>();
+		setupDefaultGame();
 	}
-	//starting a game from a 
+	//starting a game from a pre-given board
 	public Game(Board b) {
-		board = b;
-		isWhiteTurn = true;
-		whitePieces = new ArrayList<ChessPiece>();
-		blackPieces = new ArrayList<ChessPiece>();
-		Space cur;
-		
-		//add peices
-		for (int i = 0; i < 8; i++) { 
-			for (int j = 0; j < 8; j++) {
-				cur = b.spaceAt(i, j);
-				if (cur.pieceHere != null) {
-					ChessPiece thisPiece = cur.pieceHere;
-					if (thisPiece.isWhite) {
-						whitePieces.add(thisPiece);
-					}
-					else {
-						blackPieces.add(thisPiece);
+		if (b == null) {
+			new Game();
+		}
+		else {
+			board = b;
+			isWhiteTurn = true;
+			whitePieces = new ArrayList<ChessPiece>();
+			blackPieces = new ArrayList<ChessPiece>();
+			Space cur;
+
+			//add pieces from the board to the ArrayLists
+			for (int i = 0; i < 8; i++) { 
+				for (int j = 0; j < 8; j++) {
+					cur = b.spaceAt(i, j);
+					if (cur.pieceHere != null) {
+						ChessPiece thisPiece = cur.pieceHere;
+						if (thisPiece instanceof King) {
+							if (thisPiece.isWhite) {
+								whiteKing = (King) thisPiece;
+							}
+							else {
+								blackKing = (King) thisPiece;
+							}
+						}
+						if (thisPiece.isWhite) {
+							whitePieces.add(thisPiece);
+						}
+						else {
+							blackPieces.add(thisPiece);
+						}
 					}
 				}
 			}
+			
 		}
 	}
 	public void move(String input) {
@@ -99,7 +114,7 @@ public class Game {
 		catch(IllegalArgumentException e) {
 			throw e;
 		}
-		
+
 		//if the king is in check after a move, the move is undone 
 		if (inCheck(isWhiteTurn ? whiteKing : blackKing )) {
 			piece.here = from;
@@ -113,7 +128,7 @@ public class Game {
 		takeOutYourDead();
 		isWhiteTurn = !isWhiteTurn;
 	}
-	
+
 	//Returns whether the requested side is in check: for client program's use since clients cannot directly access the kings
 	public boolean sideInCheck(boolean isWhiteSide) {
 		King king = isWhiteSide ? whiteKing : blackKing;
@@ -183,7 +198,7 @@ public class Game {
 			}
 		}
 	}
-	public void clearBoard() {
+	public void resetGame() {
 		board = new Board();
 		isWhiteTurn = true;
 		whitePieces = new ArrayList<ChessPiece>();
