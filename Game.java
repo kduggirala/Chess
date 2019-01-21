@@ -312,6 +312,9 @@ public class Game {
 		return isWhiteTurn;
 	}
 	public boolean stalemated() {
+		if (whitePieces.size() == 1 && blackPieces.size() == 1) { //if only the kings are left
+			return true;
+		}
 		boolean stalemated = true;
 		ArrayList<ChessPiece> pieces = isWhiteTurn ? whitePieces : blackPieces;
 		for(ChessPiece p: pieces) {
@@ -324,6 +327,7 @@ public class Game {
 				}
 			}
 		}
+		
 		return stalemated;
 	}
 	/*Finds whether any of the pawns on the current player's side can promote into a Bishop, Rook, Knight
