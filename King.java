@@ -35,7 +35,7 @@ public class King extends ChessPiece {
 					return isHorizontalMove(there, b);
 				}
 			}
-			else if (r[0] == -3) {
+			else if (r[0] == -2) {
 				Space rookSpace = isWhite? b.spaceAt(0, 0) : b.spaceAt(0,7);
 				ChessPiece rook = rookSpace.pieceHere;
 				if (rook instanceof Rook && !((Rook) rook).hasMoved) {
@@ -68,7 +68,7 @@ public class King extends ChessPiece {
 			Space rookspace = r[0] == 2 ? (isWhite ? b.spaceAt(7, 0): b.spaceAt(7, 7)) : (isWhite ? b.spaceAt(0,  0) : b.spaceAt(0, 7));
 			ChessPiece rook = rookspace.pieceHere;
 			rookspace.pieceHere = null;
-			Space newRookspace = b.spaceAt(rookspace.x == 0 ? 2 : 5, rookspace.y);
+			Space newRookspace = b.spaceAt(rookspace.x == 0 ? 3 : 5, rookspace.y);
 			rook.here = newRookspace; 
 			newRookspace.pieceHere = rook;
 		}

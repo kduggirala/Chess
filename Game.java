@@ -54,12 +54,12 @@ public class Game {
 	}
 	public void move(String input) {
 		input = input.trim().toLowerCase();
-		input = input.substring(0, 2) + input.substring(3);
-		char[] moves = input.toCharArray();
-		if (moves.length != 4) {
+		
+		if (input.length() != 5) {
 			throw new IllegalArgumentException("Invaild input");
 		}
-
+		input = input.substring(0, 2) + input.substring(3);
+		char[] moves = input.toCharArray();
 		//converting Chess coordinates to Board coordinates
 		int[] formatted = new int[4]; 
 		for (int i = 0; i < 4; i++) {

@@ -21,9 +21,8 @@ public class Play {
 					while (true) {	
 						try {
 							try {
-								Board sampleBoard = getSampleBoards(Integer.parseInt(boardChoice));
-								Game playSampleBoard = new Game(sampleBoard);
-								playChess(playSampleBoard);
+								playSampleBoard(Integer.parseInt(boardChoice));
+								break;
 							}
 							catch(IllegalArgumentException e) {
 								System.out.println(e.getMessage());
@@ -54,10 +53,11 @@ public class Play {
 			while(playingChess) {
 				playChess(chessGame);	
 				System.out.println("\nWould you like to play again? If yes, type \"y\". Otherwise enter anything else.");
-				playingChess = in.nextLine().equalsIgnoreCase("y");
+				String choice = in.nextLine();
+				playingChess = choice.equalsIgnoreCase("y");
 				if (!playingChess) {
 					System.out.println("Are you sure you want to quit? If yes, type \"y\". Otherwise enter anything else.");
-					playingChess = in.nextLine().equalsIgnoreCase("y");
+					playingChess = !in.nextLine().equalsIgnoreCase("y");
 				}
 			}
 		}
@@ -65,7 +65,8 @@ public class Play {
 	}
 	private static void playChess(Game chessGame) {
 		Scanner in = new Scanner(System.in);
-		while (!(chessGame.checkmated() || chessGame.stalemated())) {
+		boolean gameOver = false;
+		while (!gameOver) {
 			System.out.println(chessGame.displayBoard());
 			boolean isWhiteTurn = chessGame.whoseTurn();
 			if (chessGame.sideInCheck(isWhiteTurn)) {
@@ -95,9 +96,14 @@ public class Play {
 							}
 						}
 					}
+					gameOver = (chessGame.checkmated() || chessGame.stalemated());
 					break;
 				}
 				catch(IllegalArgumentException e) {
+					if (move.equalsIgnoreCase("q")) {
+						gameOver = true;
+						break;
+					}
 					System.out.println(e.getMessage());
 				}
 			}
@@ -111,9 +117,8 @@ public class Play {
 			System.out.println("Stalemate! It's a draw!");
 		}
 		else {
-			System.out.println(chessGame.whoseTurn() ? "White" : "Black" + " side forfeits. " + winningTeam + " side wins!");
+			System.out.println((chessGame.whoseTurn() ? "White" : "Black") + " side forfeits. " + winningTeam + " side wins!");
 		}
-		in.close();
 	}
 	private static ChessPiece getNewPiece(String choice, boolean isWhite) {
 		switch(choice) {
@@ -168,7 +173,7 @@ public class Play {
 	private static void displayControls() {
 		System.out.println("Use the chess coordinates along the side of the board to locate spaces: first the letter then number as one word.");
 		System.out.println("First enter the space at which the piece you want to move is located, then the space to which you would like it to"); 
-		System.out.println("move with a space between the two. Press \"q\" at any time to quit. You can test these controls on the sample boards.\n");
+		System.out.println("move with a space between the two. Press \"q\" at any time to exit a game. You can test these controls on the sample boards.\n");
 	}
 	private static void intro() {
 		System.out.println("To see the rules, press \"r\".\nTo see the controls, press \"?\".\nTo see the sample boards, press\"s\".\nTo quit and kill the program, press \"q\".\nTo play, press \"p\"");
@@ -185,46 +190,66 @@ public class Play {
 	private static Board sampleBoard1() {
 		Board sampleBoard = new Board();
 		sampleBoard.putPiece(0, 0, new Rook(true));
-		sampleBoard.putPiece(0, 7, new Rook(true));
-		sampleBoard.putPiece(0, 1, new Knight(true));
-		sampleBoard.putPiece(0, 6, new Knight(true));
-		sampleBoard.putPiece(0, 2, new Bishop(true));
-		sampleBoard.putPiece(0, 5, new Bishop(true));
-		sampleBoard.putPiece(0, 3, new Queen(true));
-		sampleBoard.putPiece(0, 4, new King(true));
-		sampleBoard.putPiece(1, 0, new Pawn(true));
+		sampleBoard.putPiece(7, 0, new Rook(true));
+		sampleBoard.putPiece(1, 0, new Knight(true));
+		sampleBoard.putPiece(5, 2, new Knight(true));
+		sampleBoard.putPiece(2, 0, new Bishop(true));
+		sampleBoard.putPiece(6, 1, new Bishop(true));
+		sampleBoard.putPiece(3, 0, new Queen(true));
+		sampleBoard.putPiece(4, 0, new King(true));
+		sampleBoard.putPiece(0, 1, new Pawn(true));
 		sampleBoard.putPiece(1, 1, new Pawn(true));
-		sampleBoard.putPiece(1, 2, new Pawn(true));
-		sampleBoard.putPiece(1, 3, new Pawn(true));
-		sampleBoard.putPiece(1, 4, new Pawn(true));
-		sampleBoard.putPiece(1, 5, new Pawn(true));
-		sampleBoard.putPiece(1, 6, new Pawn(true));
-		sampleBoard.putPiece(1, 7, new Pawn(true));
-		sampleBoard.putPiece(7, 0, new Rook(false));
+		sampleBoard.putPiece(2, 1, new Pawn(true));
+		sampleBoard.putPiece(3, 1, new Pawn(true));
+		sampleBoard.putPiece(4, 1, new Pawn(true));
+		sampleBoard.putPiece(5, 1, new Pawn(true));
+		sampleBoard.putPiece(6, 2, new Pawn(true));
+		sampleBoard.putPiece(7, 1, new Pawn(true));
+		
+		sampleBoard.putPiece(0, 7, new Rook(false));
 		sampleBoard.putPiece(7, 7, new Rook(false));
-		sampleBoard.putPiece(7, 1, new Knight(false));
-		sampleBoard.putPiece(7, 6, new Knight(false));
-		sampleBoard.putPiece(7, 2, new Bishop(false));
-		sampleBoard.putPiece(7, 5, new Bishop(false));
-		sampleBoard.putPiece(7, 3, new Queen(false));
-		sampleBoard.putPiece(7, 4, new King(false));
-		sampleBoard.putPiece(6, 0, new Pawn(false));
-		sampleBoard.putPiece(6, 1, new Pawn(false));
-		sampleBoard.putPiece(6, 2, new Pawn(false));
-		sampleBoard.putPiece(6, 3, new Pawn(false));
-		sampleBoard.putPiece(6, 4, new Pawn(false));
-		sampleBoard.putPiece(6, 5, new Pawn(false));
+		sampleBoard.putPiece(0, 5, new Knight(false));
+		sampleBoard.putPiece(6, 7, new Knight(false));
+		sampleBoard.putPiece(1, 6, new Bishop(false));
+		sampleBoard.putPiece(5, 7, new Bishop(false));
+		sampleBoard.putPiece(2, 6, new Queen(false));
+		sampleBoard.putPiece(4, 7, new King(false));
+		sampleBoard.putPiece(0, 6, new Pawn(false));
+		sampleBoard.putPiece(1, 5, new Pawn(false));
+		sampleBoard.putPiece(2, 5, new Pawn(false));
+		sampleBoard.putPiece(3, 6, new Pawn(false));
+		sampleBoard.putPiece(4, 6, new Pawn(false));
+		sampleBoard.putPiece(5, 6, new Pawn(false));
 		sampleBoard.putPiece(6, 6, new Pawn(false));
-		sampleBoard.putPiece(6, 7, new Pawn(false));
+		sampleBoard.putPiece(7, 6, new Pawn(false));
 		return sampleBoard;
 	}
-	public static void displaySampleOptions() {
-		System.out.println("Welcome to the sample boards. Type in the number of the sample board you would like to play with:");
-		System.out.println("Board 1: Castling Demonstration");
+	private static Board sampleBoard2() {
+		return null;
 	}
-	public static void playSampleBoard(Board sampleBoard) {
-		Game playSampleBoard = new Game();
+	public static void displaySampleOptions() {
+		System.out.println("Welcome to the sample boards. Type in the number of the sample board you would like to play with or press \"q\" to quit:");
+		System.out.println("Board 1: Castling Demonstration");
+		System.out.println("Board 2: En passant Demonstration");
+	}
+	public static void playSampleBoard(int boardChoice) {
+		Board sampleBoard;
+		switch(boardChoice) {
+		case 1:
+			sampleBoard = sampleBoard1();
+			System.out.println("\nHere, the white side can castle by moving its king from e1 to g1 towards the king side");
+			System.out.println("rook while the black side can castle moving its king from e8 to c8 towards the queen side.\nTry it yourself!\n");
+			break;
+		case 2:
+			sampleBoard = sampleBoard2();
+			System.out.println("\nHere the white pawn at d2 can move forward two spaces to d4, allowing the black pawn at e4 to");
+			System.out.println("capture it using en passant by moving to d3. Try it yourself! ");
+		default:
+			throw new IllegalArgumentException("That is not an option");
+		}
+		Game playSampleBoard = new Game(sampleBoard);
 		playChess(playSampleBoard);
 
 	}
+	
 }
