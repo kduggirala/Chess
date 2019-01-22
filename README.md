@@ -8,7 +8,8 @@ Compilation and Running Instructions:
 	instructions that appear onscreen to use the program.
  
  Development Log:
- 	12/22 - Created ChessPiece interface, changed to abstract class with abstract method canMove() to allow pieces to implement independent movement logic, started implementing Pawn movement.
+ 	
+	12/22 - Created ChessPiece interface, changed to abstract class with abstract method canMove() to allow pieces to implement independent movement logic, started implementing Pawn movement.
 		   
  	12/23 - Scrapped original code, re-implemented similar code for ChessPiece but added new Space class to describe spaces on the board.
 	
