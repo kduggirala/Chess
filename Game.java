@@ -16,10 +16,8 @@ public class Game {
 	}
 	//starting a game from a pre-given board
 	public Game(Board b) {
-		if (b == null) {
-			new Game();
-		}
-		else {
+		this();
+		if (b != null) {
 			board = b;
 			isWhiteTurn = true;
 			whitePieces = new ArrayList<ChessPiece>();
@@ -52,6 +50,10 @@ public class Game {
 			
 		}
 	}
+	/*Given a user input, this method converts it to usable coordinates and tries to move the
+	 *requested piece to the requested location.
+	 *Precondition: input contains a legal move. If not, exception thrown. 
+	 */
 	public void move(String input) {
 		input = input.trim().toLowerCase();
 		
@@ -106,25 +108,16 @@ public class Game {
 		if (piece.isWhite != isWhiteTurn) {
 			throw new IllegalArgumentException("Choose one of your pieces");
 		}
-		ChessPiece captured = null;
-		Space capturedSpace = to;
 		try {
-			captured = piece.move(to, board);
+			if (inCheckIfMove(piece, to)) {
+				throw new IllegalArgumentException("You cannot endanger the king!");
+			}
+			piece.move(to, board);
 		}
 		catch(IllegalArgumentException e) {
 			throw e;
 		}
 
-		//if the king is in check after a move, the move is undone 
-		if (inCheck(isWhiteTurn ? whiteKing : blackKing )) {
-			piece.here = from;
-			from.pieceHere = piece;
-			capturedSpace.pieceHere = captured;
-			if (captured != null) {	
-				captured.here = capturedSpace;
-			}
-			throw new IllegalArgumentException("You cannot endanger the king!");
-		}
 		takeOutYourDead();
 		isWhiteTurn = !isWhiteTurn;
 	}
@@ -156,6 +149,7 @@ public class Game {
 		}
 		return false;
 	}
+	//Removes captured pieces from the board
 	private void takeOutYourDead() {
 		ArrayList<ChessPiece> pieces = isWhiteTurn ? blackPieces : whitePieces; 
 		for (int i = 0; i < pieces.size(); i++) {
@@ -246,20 +240,7 @@ public class Game {
 					continue;
 				}
 				if (king.canMove(cur, board)) {
-					Space kingAt = king.here;
-					ChessPiece pieceThere = cur.pieceHere;
-					//king moves to new spot and checks if he's in check there, then undoes his move
-					king.move(cur, board);
-					boolean wasInCheck = inCheck(king);
-					
-					cur.pieceHere = pieceThere;
-					kingAt.pieceHere = king;
-					king.here = kingAt;
-					if(pieceThere != null) {
-						pieceThere.here = cur;
-					}
-					
-					if(!wasInCheck) {
+					if (!inCheckIfMove(king, cur)) {
 						stuck = false;
 						break;
 					}
@@ -281,19 +262,7 @@ public class Game {
 					for (int j = 0; j < 8; j++) {
 						cur = board.spaceAt(i, j); 
 						if (p.canMove(cur, board)) {
-							Space pieceAt = p.here;
-							ChessPiece pieceThere = p.move(cur, board);
-							boolean wasInCheck = inCheck(king);
-							//resets the pieces to their original positions
-
-							cur.pieceHere = pieceThere;
-							pieceAt.pieceHere = p;
-							p.here = pieceAt;
-							if(pieceThere != null) {
-								pieceThere.here = cur;
-							}
-							
-							if(!wasInCheck) { //if there is a safe move the king, returns false
+							if(!inCheckIfMove(p, cur)) { //if there is a safe move for the king, returns false
 								return false;
 							}
 						}
@@ -317,14 +286,33 @@ public class Game {
 			for (int i = 0; i < 8; i++) {
 				for (int j = 0; j < 8; j++) {
 					if (p.canMove(board.spaceAt(i, j), board)) {
-						stalemated = false;
-						break;
+						if (!inCheckIfMove(p, board.spaceAt(i, j))) {
+							stalemated = false;
+							break;
+						}
 					}
 				}
 			}
 		}
 		
 		return stalemated;
+	}
+	//Considers the piece p moving to space there and returns whether the king would be safe under this move
+	private boolean inCheckIfMove(ChessPiece p, Space there) {
+		King king = p.isWhite ? whiteKing : blackKing;
+		Space pieceAt = p.here;
+		ChessPiece pieceThere = p.move(there, board);
+		boolean wasInCheck = inCheck(king);
+		//resets the pieces to their original positions
+
+		there.pieceHere = pieceThere;
+		pieceAt.pieceHere = p;
+		p.here = pieceAt;
+		if(pieceThere != null) {
+			pieceThere.here = there;
+		}
+		
+		return wasInCheck; //if the move was safe, return true 
 	}
 	/*Finds whether any of the pawns on the current player's side can promote into a Bishop, Rook, Knight
 	 * or Queen. If so, returns this pawn. Otherwise, returns null.

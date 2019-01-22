@@ -16,8 +16,9 @@ public class Play {
 				}
 				else if (input.equalsIgnoreCase("s")) {
 					displaySampleOptions();
-					String boardChoice = in.nextLine();
+					String boardChoice;
 					while (true) {	
+						boardChoice = in.nextLine();
 						try {
 							try {
 								playSampleBoard(Integer.parseInt(boardChoice));
@@ -225,10 +226,21 @@ public class Play {
 		sampleBoard.putPiece(4, 7, new King(false));
 		return sampleBoard;
 	}
+	private static Board sampleBoard3() {
+		Board sampleBoard = new Board();
+		sampleBoard.putPiece(0, 6, new Rook (true));
+		sampleBoard.putPiece(7, 0, new Rook (true));
+		sampleBoard.putPiece(4, 0, new King (true));
+		sampleBoard.putPiece(3, 0, new Queen(true));
+		sampleBoard.putPiece(4, 7, new King(false));
+		return sampleBoard;
+	}
 	public static void displaySampleOptions() {
 		System.out.println("Welcome to the sample boards. Type in the number of the sample board you would like to play with or press \"q\" to quit:");
 		System.out.println("Board 1: Castling Demonstration");
-		System.out.println("Board 2: En passant Demonstration");
+		System.out.println("Board 2: En Passant and Pawn Promotion Demonstration");
+		System.out.println("Board 3: Check and Checkmate Demonstration");
+		
 	}
 	public static void playSampleBoard(int boardChoice) {
 		Board sampleBoard;
@@ -240,8 +252,15 @@ public class Play {
 			break;
 		case 2:
 			sampleBoard = sampleBoard2();
-			System.out.println("\nHere the white pawn at e2 can move forward two spaces to e4, allowing the black pawn at d4 to");
-			System.out.println("capture it using en passant by moving to e3. Try it yourself! ");
+			System.out.println("\nHere, the white pawn at e2 can move forward two spaces to e4, allowing the black pawn at d4 to");
+			System.out.println("capture it using en passant by moving to e3. From here, it can travel to the end of the board and "
+					+ "\nPromote into another piece. Try it yourself!\n");
+			break;
+		case 3:
+			sampleBoard = sampleBoard3();
+			System.out.println("\nHere, the black king will go into check if the rook at a7 moves to a8 but checkmate if the rook");
+			System.out.println("at h1 moves to h8. If you use the queen and rooks to trap the king by moving the rook at h1 to f1,"); 
+			System.out.println("a stalemate will occur. Try it yourself!\n");
 			break;
 		default:
 			throw new IllegalArgumentException("That is not an option");
@@ -250,5 +269,4 @@ public class Play {
 		playChess(playSampleBoard);
 
 	}
-	
 }
