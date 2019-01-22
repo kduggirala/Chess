@@ -16,8 +16,8 @@ public class Game {
 	}
 	//starting a game from a pre-given board
 	public Game(Board b) {
-		this();
-		if (b != null) {
+		this(); // if a null board given, it calls the other constructor and leaves it at that
+		if (b != null) { 
 			board = b;
 			isWhiteTurn = true;
 			whitePieces = new ArrayList<ChessPiece>();

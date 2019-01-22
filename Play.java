@@ -3,7 +3,7 @@ public class Play {
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
 		System.out.println("Welcome to Two-Player Terminal Chess!\n");
-		boolean isQuitting = false; // programs runs while this is true.
+		boolean isQuitting = false; // programs runs while this is false.
 		while (!isQuitting) {
 			intro();
 			String input = in.nextLine();
