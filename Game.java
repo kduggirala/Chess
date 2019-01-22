@@ -250,22 +250,17 @@ public class Game {
 					ChessPiece pieceThere = cur.pieceHere;
 					//king moves to new spot and checks if he's in check there, then undoes his move
 					king.move(cur, board);
-					if(inCheck(king)) {
-						cur.pieceHere = pieceThere;
-						kingAt.pieceHere = king;
-						king.here = kingAt;
-						if(pieceThere != null) {
-							pieceThere.here = cur;
-						}
+					boolean wasInCheck = inCheck(king);
+					
+					cur.pieceHere = pieceThere;
+					kingAt.pieceHere = king;
+					king.here = kingAt;
+					if(pieceThere != null) {
+						pieceThere.here = cur;
 					}
-					else {
+					
+					if(!wasInCheck) {
 						stuck = false;
-						cur.pieceHere = pieceThere;
-						kingAt.pieceHere = king;
-						king.here = kingAt;
-						if(pieceThere != null) {
-							pieceThere.here = cur;
-						}
 						break;
 					}
 				}
@@ -297,7 +292,8 @@ public class Game {
 							if(pieceThere != null) {
 								pieceThere.here = cur;
 							}
-							if(wasInCheck) {
+							
+							if(!wasInCheck) { //if there is a safe move the king, returns false
 								return false;
 							}
 						}

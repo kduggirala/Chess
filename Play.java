@@ -2,7 +2,6 @@ import java.util.Scanner;
 public class Play {
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
-		Game chessGame = new Game();
 		System.out.println("Welcome to Two-Player Terminal Chess!\n");
 		boolean isQuitting = false; // programs runs while this is true.
 		while (!isQuitting) {
@@ -49,8 +48,10 @@ public class Play {
 				intro();
 				input = in.nextLine();
 			}
-			boolean playingChess = !isQuitting;	
+			boolean playingChess = !isQuitting;
+			Game chessGame;
 			while(playingChess) {
+				chessGame = new Game();
 				playChess(chessGame);	
 				System.out.println("\nWould you like to play again? If yes, type \"y\". Otherwise enter anything else.");
 				String choice = in.nextLine();
@@ -111,7 +112,7 @@ public class Play {
 		System.out.println(chessGame.displayBoard());
 		String winningTeam = chessGame.whoseTurn() ? "Black" : "White";
 		if (chessGame.checkmated()) {
-			System.out.println("Checkmate! " + winningTeam + " wins!");
+			System.out.println("\t  Checkmate! " + winningTeam + " wins!");
 		}
 		else if (chessGame.stalemated()) {
 			System.out.println("Stalemate! It's a draw!");
@@ -179,14 +180,6 @@ public class Play {
 		System.out.println("To see the rules, press \"r\".\nTo see the controls, press \"?\".\nTo see the sample boards, press\"s\".\nTo quit and kill the program, press \"q\".\nTo play, press \"p\"");
 		System.out.println();
 	}
-	public static Board getSampleBoards(int n) {
-		switch(n) {
-		case 1:
-			return sampleBoard1();
-		default:
-			throw new IllegalArgumentException("That is not an option");
-		}
-	}
 	private static Board sampleBoard1() {
 		Board sampleBoard = new Board();
 		sampleBoard.putPiece(0, 0, new Rook(true));
@@ -225,7 +218,12 @@ public class Play {
 		return sampleBoard;
 	}
 	private static Board sampleBoard2() {
-		return null;
+		Board sampleBoard = new Board();
+		sampleBoard.putPiece(4, 1, new Pawn(true));
+		sampleBoard.putPiece(4, 0, new King(true));
+		sampleBoard.putPiece(3, 3, new Pawn(false));
+		sampleBoard.putPiece(4, 7, new King(false));
+		return sampleBoard;
 	}
 	public static void displaySampleOptions() {
 		System.out.println("Welcome to the sample boards. Type in the number of the sample board you would like to play with or press \"q\" to quit:");
@@ -242,8 +240,9 @@ public class Play {
 			break;
 		case 2:
 			sampleBoard = sampleBoard2();
-			System.out.println("\nHere the white pawn at d2 can move forward two spaces to d4, allowing the black pawn at e4 to");
-			System.out.println("capture it using en passant by moving to d3. Try it yourself! ");
+			System.out.println("\nHere the white pawn at e2 can move forward two spaces to e4, allowing the black pawn at d4 to");
+			System.out.println("capture it using en passant by moving to e3. Try it yourself! ");
+			break;
 		default:
 			throw new IllegalArgumentException("That is not an option");
 		}
